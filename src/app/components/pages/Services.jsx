@@ -8,7 +8,6 @@ import { MdDevices } from "react-icons/md";
 import { motion, useScroll } from "framer-motion";
 
 export const Services = () => {
-  const { scrollYProgress } = useScroll();
   const box = [
     {Icon: BsStack,
       title: "Web Design and Devlopment",
@@ -40,10 +39,10 @@ export const Services = () => {
  
   return (
     <>
-      <motion.section style={{ scale: scrollYProgress }} id="serivce" className="mx-16 mt-16">
+      <motion.section  id="serivce" className="md:mx-16 mx-4 mt-16">
         <div>
           <h2 className="text-5xl text-center mb-8">Services</h2>
-          <div className="flex md:grid md:grid-cols-3 gap-6">
+          <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
             {box.map((e) => {
               return <ServiceCard key={e.title} title={e.title} description={e.description} Icon={e.Icon}/>;
             })}

@@ -1,55 +1,58 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
-import { easeInOut, motion } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 export const AboutValues = ({ title, description }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const boxref = useRef();
+  const textref = useRef();
+  const [isHovered, setIsHovered] = useState(false);
+  const tl = useRef(gsap.timeline({ paused: true }));
 
-  const handleMouseEnter = () => setIsVisible(true);
-  const handleMouseLeave = () => setIsVisible(false);
-  const handleClick = () => setIsVisible(!isVisible);
+  useEffect(() => {
+    // tl.current.from(
+    //   textref.current,
+    //   {
+    //     y: -25,
+    //     display: "none",
+    //     opacity: 0,
+    //   },
+    //   "a"
+    // );
+  }, []);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    // tl.current.play();
+    console.log("mouseenter");
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    // tl.current.reverse();
+    console.log("mouseleave");
+  };
 
   return (
     <>
-      <motion.div
-        //   className="card"
+      <div
+        ref={boxref}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-        // initial={{ y: 0 }}
-        // animate={{ y: isVisible ? -10 : 0 }}
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
-        layout
-        className="flex w-full justify-between py-6 border-b-2 border-black"
+        className="aboutBox flex w-full justify-between py-6 border-b-2 border-black"
       >
         <div className="flex flex-col">
           <h3 className="text-2xl  ">{title}</h3>
-          {isVisible && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, ease: easeInOut }}
-            >
-              {description}
-            </motion.p>
-          )}
+          <p className='' ref={textref} >
+            {description}
+          </p>
         </div>
 
-        <motion.div
-          animate={{
-            rotate: isVisible ? 135 : 0,
-            backgroundColor: isVisible ? "#000" : "#fff",
-            color: isVisible ? "#fff" : "#000",
-          }}
-          transition={{ duration: 0.3 }}
-          className="border-black border-2 h-12 w-12 flex justify-center items-center p-4 rounded-full"
-        >
+        <div className="arrow border-black border-2 h-12 w-12 flex justify-center items-center p-4 rounded-full">
           <FaArrowRight />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </>
   );
 };
