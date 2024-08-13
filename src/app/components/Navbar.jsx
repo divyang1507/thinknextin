@@ -4,25 +4,31 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaBars } from "react-icons/fa";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-// import { ScrollTrigger } from "gsap/all";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { easeIn } from "framer-motion";
+
 export const Navbar = () => {
   gsap.registerPlugin(ScrollTrigger);
+
   const [isOpen, setisOpen] = useState(false);
   const navRef = useRef(null);
   const tl = useRef();
-  const { contextSafe } = useGSAP({ scope: navRef });
 
+  //nav menu open close
   useGSAP(
     () => {
-      gsap.set(".navmenu", { y: -75, display: "hidden" });
-      tl.current = gsap.timeline({ paused: true }).to(".navmenu", {
-        display: "flex",
-        y: 0,
-        duration: 0.5,
-        ease: easeIn,
-      });
+      gsap.set(".navmenu", { y: -100, opacity: 0, display: "hidden" });
+      gsap.set(".navLink", { x: -100, opacity: 0 });
+      tl.current = gsap
+        .timeline({ paused: true })
+        .to(".navmenu", {
+          display: "flex",
+          opacity: 1,
+          y: 0,
+          duration: 0.1,
+          ease: easeIn,
+        })
+        .to(".navLink", { x: 0, opacity: 1, duration: 0.1, stagger: 0.3 });
     },
     { scope: navRef }
   );
@@ -35,68 +41,28 @@ export const Navbar = () => {
     }
   }, [isOpen]);
 
-  // useEffect(() => {
-
-  //   gsap.to('nav', {
-  //     backgroundColor: '#000000',
-  //     color: 'white',
-  //     duration: 0.5,
-  //     scrollTrigger: {
-  //       trigger: 'nav',
-  //       start: "top -10%",
-  //       end: "top -11%",
-  //       scrub: true,
-  //       markers: true // Uncomment this line to see the scroll triggers
-  //     },
-  //   });
-  // }, []);
-
-  // const animate = contextSafe(() => {
-  //   let narrownav = gsap.matchMedia();
-  //   narrownav.add("(max-width: 800px)", () => {
-  //     if (isOpen == true) {
-  //       console.log('close')
-  //       gsap.timeline().to(".navLink", {
-  //           x: -100,
-  //           opacity: 0,
-  //           delay: 0.2,
-  //           color: "#ffffff",
-  //           stagger: 0.3,
-  //         })
-  //         .to(".navmenu", {
-  //           opacity: 0, // Fade out
-  //           duration: 0.3,
-  //           y: -100,
-  //           display: "none",
-  //           //   onComplete: () => navMenu.style.display = 'none'
-  //         });
-  //     } else {
-  //       console.log('open')
-  //       // Show the menu
-  //       gsap.timeline().set(".navmenu", { display: "flex" }) .to(".navmenu", {
-  //           opacity: 1, // Fade in
-  //           backgroundColor: "#000000",
-  //           color: "#ffffff",
-  //           duration: 0.3,
-  //           y: 0,
-  //         })
-  //         .to(".navLink", {
-  //           x: 0,
-  //           opacity: 1,
-  //           delay: 0.2,
-  //           color: "#ffffff",
-  //           stagger: 0.3,
-  //         });
-  //     }
-  //   });
-  // });
-
   const toggleMenu = () => {
     setisOpen(!isOpen);
     console.log("after click" + isOpen);
-    // animate()
   };
-
+  //navturns black
+  useGSAP(
+    () => {
+      let mm = gsap.matchMedia();
+      mm.add("(min-width: 800px)", () => {
+        const tl = gsap.timeline();
+        tl.from("", {
+          duration: 0.5,
+          color: "black",
+          y: -100,
+          ease: "power1.out",
+          stagger: 0.2,
+          delay: 1,
+        });
+      });
+    },
+    { scope: navRef }
+  );
   return (
     <>
       <nav
