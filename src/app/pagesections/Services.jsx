@@ -1,13 +1,18 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { ServiceCard } from "../components/ServiceCard";
 import { BsStack } from "react-icons/bs";
 import { GrOptimize } from "react-icons/gr";
 import { FaLaptopCode, FaHeadSideVirus } from "react-icons/fa6";
 import { MdDevices } from "react-icons/md";
-import { motion, useScroll } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export const Services = () => {
+  const ref = useRef()
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0.5, 1], [1, 0.8]);
+
+
   const box = [
     {
       Icon: BsStack,
@@ -44,7 +49,7 @@ export const Services = () => {
 
   return (
     <>
-      <motion.section id="serivce" className="md:mx-16 mx-4 mt-16">
+      <motion.section style={{scale}}  ref={ref} id="serivce" className="md:mx-16 mx-4 mt-16">
         <div>
           <h2 className="text-5xl text-center mb-8">Services</h2>
           <div className="flex flex-col md:grid md:grid-cols-3 gap-6">

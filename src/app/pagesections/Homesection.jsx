@@ -1,14 +1,25 @@
+'use client'
+import {motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import React from "react";
+import React, { useRef } from "react";
 
-export const Homesection = () => {
+export const Homesection = ({scrollYProgress}) => {
+  // const ref = useRef()
+  // const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
   return (
     <>
-      <section
+      <motion.section
         id="home"
-        className="h-[100vh] mx-auto flex justify-center items-center text-white"
+        style={{scale}}
+        className="h-[100vh] mx-auto flex justify-center items-center text-white -z-0"
       >
-        <Image className="brightness-50 w-screen h-screen absolute -z-10" src="/ITimage.jpg" fill={true} alt="heroimage" />
+        <Image
+          className="brightness-50 w-screen h-screen absolute -z-10"
+          src="/ITimage.jpg"
+          fill={true}
+          alt="heroimage"
+        />
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-4xl md:text-6xl">Think IT, Think Next</h1>
           <h2 className="text-3xl md:text-5xl">Expert in IT Solutions</h2>
@@ -18,7 +29,7 @@ export const Homesection = () => {
             ahead in the digital landscape.
           </p>
         </div>
-      </section>
+      </motion.section>
     </>
   );
 };
